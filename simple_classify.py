@@ -66,7 +66,7 @@ class TextClassifier:
             per_device_eval_batch_size=16,
             warmup_steps=500,
             weight_decay=0.01,
-            report_to="wandb",
+            report_to="none",
             no_cuda=True,
             use_xpu=True,
             use_ipex=True,
