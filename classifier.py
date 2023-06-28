@@ -43,26 +43,32 @@ class TextClassifier:
 
         Args:
             model_name (str): The name of the pre-trained model.
-            dataset_name (str): The name of the dataset to be used for training.
+            dataset_name (str): The path to the dataset file (e.g., CSV or JSON) to be used for training.
             num_labels (int): The number of unique labels in the dataset.
             task_type (str): The type of classification task. Must be either "multi_class" or "multi_label".
             output_dir (str, optional): The directory where the output files will be saved. Defaults to "./output".
 
         Dataset Structure:
-            The input dataset should be a dictionary-like object with the keys 'text' and 'label'. The 'text' field
+            The input dataset should be a CSV or JSON file with two columns 'text' and 'label'. The 'text' field
             should contain the text data as a list of strings. The 'label' field should contain the label data as a list
-            of integers for multi-class classification or as a list of list of integers for multi-label classification.
+            of integers for multi-class classification or as a list of lists of integers for multi-label classification.
             For example, for multi-class classification, the dataset can look like:
-                {
-                    'text': ['This is text 1', 'This is text 2', 'This is text 3'],
-                    'label': [0, 2, 1]  # where 0, 1, 2 are class labels
-                }
+
+            | text            | label |
+            |-----------------|-------|
+            | This is text 1  | 0     |
+            | This is text 2  | 2     |
+            | This is text 3  | 1     |
+
             And for multi-label classification, the dataset can look like:
-                {
-                    'text': ['This is text 1', 'This is text 2', 'This is text 3'],
-                    'label': [[0, 1], [1, 2], [0, 2]]  # where 0, 1, 2 are class labels
-                }
+
+            | text            | label        |
+            |-----------------|--------------|
+            | This is text 1  | [0, 1]       |
+            | This is text 2  | [1, 2]       |
+            | This is text 3  | [0, 2]       |
         """
+        
         assert task_type in {"multi_class", "multi_label"}
         self.device_name = ipex.xpu.get_device_name()
         logger.info(f"Device name: {self.device_name}")
