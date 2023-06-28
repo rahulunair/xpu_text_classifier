@@ -92,6 +92,7 @@ xpu-smi dump -m5,18  # VRAM utilization
 ## Additional Details
 
 The custom_finetune.py script fetches an e-book from Gutenberg and prepares a dataset for the training task. The dataset is stored in the directory specified by dataset_name as a csv file with two columns: text and label.
+
 **Please note**, the transformers expect the labels to be integers. If your labels are strings, make sure to encode them into integers before passing them to the TextClassifier:
 
 ```python
