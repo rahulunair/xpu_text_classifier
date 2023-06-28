@@ -62,16 +62,48 @@ Multi-Label Classification Example:
 | This is text 3  | [0, 2]       |
 
 
+After preparing your dataset, save it in a format such as JSON or CSV in a directory. The name of this directory will be used as the dataset_name parameter when using the TextClassifier.
+
 ## Usage
 
 The script `custom_finetune.py` in the root directory is your entry point for training a model. By default, it uses the 'distilbert-base-uncased' model and Gutenberg dataset with 30 labels.
 
-To run the training on a single GPU:
+You can either tweak the `custom_finetune.py` file or create a new python file with these details:
+
+Import TextClassifier from classifier module
+```python
+import torch
+import intel_extension_for_pytorch
+
+from classifier import Text Classifier
+```
+
+Instantiate the classifier:
+
+```python
+classifier = TextClassifier(
+    model_name="distilbert-base-uncased",
+    dataset_name="path/to/your/dataset_directory",  # use the name of the directory where you saved your dataset
+    num_labels=2,
+    task_type="multi_class",
+)
+```
+
+Start Training:
+
+```python
+classifier.train(epochs=10, batch=16, use_bf16=False)
+```
+
+You can specify the model name, number of labels(classes), number of epochs, batch size, and whether to use BF16 precision with the train function as shown in the file `custom_finetune.py`. 
+
+
+To train on a single GPU:
 
 ```bash
 python custom_finetune.py
 ```
-To run the training using all available GPUs:
+To train using all available GPUs:
 
 ```bash
 export MASTER_ADDR=127.0.0.1
@@ -80,7 +112,7 @@ mpirun -n 4 python custom_finetune.py
 ```
 Replace 4 with the number of GPUs available in your system.
 
-You can specify the model name, number of labels(classes), number of epochs, batch size, and whether to use BF16 precision with the train function. 
+
 
 ## Monitoring GPU Usage
 
